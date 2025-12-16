@@ -1,58 +1,81 @@
-import { useState, useEffect } from 'react'
-import './components/NoteForm'
-import './components/NoteList'
-import './App.css'
+import { useState, useEffect } from "react";
+import NoteForm from "./components/NoteForm";
+import NoteList from "./components/NoteList";
+import "./App.css";
 
 function App() {
- 
-  const [notes, setNotes] = useState (() => {
+  const [notes, setNotes] = useState(() => {
     const saved = localStorage.getItem("notes");
-    return saved ? JSON.parse(saved): [];
+    return saved ? JSON.parse(saved) : [];
   });
+
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [search, setSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
-  const [editingIndex, setEditingIndex] = useState(null);
-  
-
-  
   const addNote = (newNote) => {
     setNotes([...notes, newNote]);
   };
 
-  const updateNote = (index, upNote) => {
+  const updateNote = (index, updatedNote) => {
     setNotes(
-      notes.map((note, i) =>
-        i === index ? upNote : note
-      )
+      notes.map((note, i) => (i === index ? updatedNote : note))
     );
     setEditingIndex(null);
   };
 
-  const deleteNote = () => {
-
+  const deleteNote = (index) => {
+    setNotes(notes.filter((_, i) => i !== index));
   };
 
+  // 🔍 SEARCH
+  const filteredNotes = notes.filter((note) =>
+    note.title.toLowerCase().includes(search.toLowerCase())
+  );
 
+  // ↕️ SORT
+  const sortedNotes = [...filteredNotes].sort((a, b) => {
+    if (sortOrder === "asc") {
+      return a.title.localeCompare(b.title);
+    } else {
+      return b.title.localeCompare(a.title);
+    }
+  });
 
   return (
-   <div>
-    <h1>NOTES APP</h1>
+    <div className="container">
+      <h1>Notes App</h1>
 
-    <NoteForm
-      editingIndex={editingIndex}
-      notes={notes}
-      addNote={addNote}
-      updateNote={updateNote}
-    />
+      <input
+        type="text"
+        placeholder="Search notes..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
-    <NoteList
-    
-    />
-   </div>
-  )
+      <select onChange={(e) => setSortOrder(e.target.value)}>
+        <option value="asc">A → Z</option>
+        <option value="desc">Z → A</option>
+      </select>
+
+      <NoteForm
+        editingIndex={editingIndex}
+        notes={notes}
+        addNote={addNote}
+        updateNote={updateNote}
+      />
+
+      <NoteList
+        notes={sortedNotes}
+        setEditingIndex={setEditingIndex}
+        deleteNote={deleteNote}
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;

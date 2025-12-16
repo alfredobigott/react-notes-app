@@ -1,64 +1,57 @@
 import { useState, useEffect } from 'react'
 
-function NoteForm({editingIndex, notes, updateNote, addNote}) {
+function NoteForm({ editingIndex, notes, updateNote, addNote }) {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
+  useEffect(() => {
+    if (editingIndex !== null) {
+      setTitle(notes[editingIndex].title);
+      setContent(notes[editingIndex].content);
+    } else {
+      setTitle("");
+      setContent("");
+    }
+  }, [editingIndex, notes]);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    useEffect(() => {
-        if (editingIndex !== null) {
-            setTitle(notes[editingIndex].title);
-            setContent(note[editingIndex].content);
-        }
-        else {
-            setTitle("");
-            setContent("");
-        }
-    },[editingIndex, notes]);
+    const newNote = { title, content };
 
+    if (editingIndex === null) {
+      addNote(newNote);
+    } else {
+      updateNote(editingIndex, newNote);
+    }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    setTitle("");
+    setContent("");
+  };
 
-        const newNote = {title, content};
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        required
+      />
 
-        if (editingIndex === null) {
-            addNote(newNote);
-        }
-        else {
-            updateNote(editingIndex, newNote);
-        }
+      <input
+        type="text"
+        placeholder="Content"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        required
+      />
 
-        setTitle("");
-        setContent("");
-    };
-
-    return (
-
-        <form onSubmit={handleSubmit}>
-            <input
-             type="text"
-             placeholder="Title"
-             value={title}
-             onChange={(e) => setTitle(e.target.value)}
-             required
-            />
-
-            <input
-             type="text"
-             placeholder="Content"
-             value={content}
-             onChange={(e) => setContent(e.target.value)}
-             required
-            />
-
-            <button>
-                {editingIndex === null ? "Add note" : " Update note"}
-            </button>
-        </form>
-
-    );
+      <button>
+        {editingIndex === null ? "Add note" : "Update note"}
+      </button>
+    </form>
+  );
 }
 
-export default NoteForm
+export default NoteForm;

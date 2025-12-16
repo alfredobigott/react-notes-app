@@ -1,42 +1,93 @@
-#root {
-  max-width: 1280px;
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f4f6f8;
+  color: #333;
+}
+
+div {
+  max-width: 600px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 24px;
+}
+
+h1 {
   text-align: center;
+  margin-bottom: 24px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Search + Sort */
+input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  background-color: #2563eb;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+button:hover {
+  background-color: #1e4fd6;
 }
 
-.card {
-  padding: 2em;
+button + button {
+  margin-left: 8px;
 }
 
-.read-the-docs {
-  color: #888;
+/* Notes Form */
+form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+form input {
+  flex: 1;
+}
+
+/* Notes List */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Note Item */
+li {
+  background-color: white;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+li button {
+  background-color: #ef4444;
+}
+
+li button:hover {
+  background-color: #dc2626;
+}
+
+/* Empty state */
+p {
+  text-align: center;
+  color: #777;
 }
